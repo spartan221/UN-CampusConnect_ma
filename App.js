@@ -1,21 +1,18 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import TutorProfile from './src/screens/TutorProfile';
-
-export default function App() {
-  const message = 'Hello';
-  return (
-    <View style={styles.container}>
-      <TutorProfile />
-    </View>
-  );
-}
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Authentication from './src/components/Authentication';
 
 const styles = StyleSheet.create({
-  container: {
+  wrapper: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
+
+export default App = () => {
+  return (
+    <SafeAreaView style={styles.wrapper}>
+      <Authentication />
+    </SafeAreaView>
+  );
+};
