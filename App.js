@@ -1,22 +1,18 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-
-export default function App() {
-  const message = "Hello"
-  return (
-    <View style={{ backgroundColor: '#ddd', flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Hello World</Text>
-      <Text>Hello World</Text>
-      <Text>{message}</Text>
-    </View>
-  );
-}
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Authentication from './src/components/Authentication';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    wrapper: {
+        flex: 1
+    },
 });
+
+export default App = () => {
+    return (
+        <SafeAreaView style={styles.wrapper}>
+            <Authentication />
+        </SafeAreaView >
+    )
+};
