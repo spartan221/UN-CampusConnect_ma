@@ -18,7 +18,7 @@ const request = async (graphQLQuery, token) => {
         data: graphQLQuery,
         headers: {
             "content-type": "application/json",
-            //TODO: manage bearer token
+            "Authorization": `Bearer ${token}`
         }
     });
     // Exist an error

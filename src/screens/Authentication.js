@@ -1,11 +1,10 @@
-import React from 'react';
-import { Text, View, StyleSheet, Button, TextInput } from 'react-native';
+import React, { useContext } from 'react';
+import { Text, View, StyleSheet, Button, TextInput, Image } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 
-import request from '../utilities/request';
-import GraphQLQuery from '../utilities/GraphQLQuery';
-import { GRAPHQL } from '../utilities/constants';
-import { signin } from '../utilities/auth';
+import { getMyInfo, signin } from '../GraphQL';
+import { UserContext } from '../utilities/UserContext';
+import { alertWindow } from '../utilities/alert';
 
 
 const styles = StyleSheet.create({
@@ -24,12 +23,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     loginIcon: {
-        width: 100,
-        height: 150,
+        width: 200,
+        height: 250,
+        alignSelf: 'center',
+        marginBottom: 20,
+        borderRadius: 50,
     },
 });
 
 export default Authentication = () => {
+
+    const [user, setUser] = useContext(UserContext);
+
     const {
         control,
         handleSubmit,
@@ -41,25 +46,28 @@ export default Authentication = () => {
         },
     });
 
-
+    const manageErrors = (errors) => {
+        const error = errors[0];
+        const errorMessage = error.description;
+        alertWindow('¡Ha ocurrido un error!', errorMessage, 'Aceptar');
+    };
 
     const onSubmit = (data) => {
         const { email, password } = data;
         signin(email, password)
-            .then((token) => {
-                console.log(token);
-            })
-            .catch((errors) => {
-                // TODO: manage erros
-                console.log(errors);
-            });
+            .then((token) => getMyInfo(token))
+            .then((myInfo) => setUser(myInfo))
+            .catch((errors) => manageErrors(errors));
     };
 
     return (
         <View style={styles.content}>
             <View style={styles.formWrapper}>
                 <View style={styles.form}>
-                    <Text>Logo UN-CampusConnect</Text>
+                    <Image
+                        source={require('../../assets/logo.png')}
+                        style={styles.loginIcon}
+                    />
                     <View>
                         <Controller
                             control={control}

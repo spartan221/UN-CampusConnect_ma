@@ -17,6 +17,18 @@ export const GRAPHQL = {
                 }
             `
         ,
+        getMyInfo:
+            `
+                {
+                    getMyInfo {
+                        id,
+                        email,
+                        username,
+                        role
+                    }
+                }
+
+            `
     },
     mutation: {
 
