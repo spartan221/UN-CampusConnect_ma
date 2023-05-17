@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { Text, View, StyleSheet, Button, TextInput, Image } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-
 import { getMyInfo, signin } from '../GraphQL';
 import { UserContext } from '../utilities/UserContext';
-import { alertWindow } from '../utilities/alert';
+import { emailPattern } from '../utilities/patterns';
+import { validationMessages } from '../utilities/constants';
+import { manageFieldErrors, manageSubmitErrors } from '../utilities/errors';
 
 
 const styles = StyleSheet.create({
@@ -29,6 +30,9 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         borderRadius: 50,
     },
+    textError: {
+        color: 'red',
+    }
 });
 
 export default Authentication = () => {
@@ -46,19 +50,16 @@ export default Authentication = () => {
         },
     });
 
-    const manageErrors = (errors) => {
-        const error = errors[0];
-        const errorMessage = error.description;
-        alertWindow('¡Ha ocurrido un error!', errorMessage, 'Aceptar');
-    };
 
-    const onSubmit = (data) => {
+
+    const onSubmit = useCallback((data) => {
         const { email, password } = data;
         signin(email, password)
             .then((token) => getMyInfo(token))
             .then((myInfo) => setUser(myInfo))
-            .catch((errors) => manageErrors(errors));
-    };
+            // TODO: Si la cuenta está verificada ir al home screen, sinó al emailConfirmation screen 
+            .catch((errors) => manageSubmitErrors(errors));
+    }, []);
 
     return (
         <View style={styles.content}>
@@ -72,7 +73,14 @@ export default Authentication = () => {
                         <Controller
                             control={control}
                             rules={{
-                                required: true,
+                                required: {
+                                    message: validationMessages.required,
+                                    value: true
+                                },
+                                pattern: {
+                                    message: validationMessages.email,
+                                    value: emailPattern
+                                }
                             }}
                             render={({ field: { onChange, onBlur, value } }) => (
                                 <TextInput
@@ -84,14 +92,19 @@ export default Authentication = () => {
                             )}
                             name="email"
                         />
-                        {errors.email && <Text>TODO: errores campo de email</Text>}
+                        {errors.email && <Text style={styles.textError}>{manageFieldErrors(errors.email)}</Text>}
 
                         <Controller
                             control={control}
                             rules={{
-                                required: true,
-                                minLength: 8,
-                                maxLength: 100,
+                                required: {
+                                    message: validationMessages.required,
+                                    value: true
+                                },
+                                minLength: {
+                                    message: validationMessages.password,
+                                    value: 8
+                                }
                             }}
                             render={({ field: { onChange, onBlur, value } }) => (
                                 <TextInput
@@ -103,9 +116,9 @@ export default Authentication = () => {
                             )}
                             name="password"
                         />
-                        {errors.password && <Text>TODO: Errores campo de contraseña</Text>}
+                        {errors.password && <Text style={styles.textError}>{manageFieldErrors(errors.password)}</Text>}
 
-                        <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+                        <Button title="Iniciar sesión" onPress={handleSubmit(onSubmit)} />
                     </View>
                 </View>
             </View>
