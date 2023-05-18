@@ -4,7 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { validationMessages } from "../utilities/constants";
 import { activationCodePattern } from "../utilities/patterns";
 import { confirmEmail } from "../GraphQL";
-import { manageFieldErrors, manageSubmitErrors } from '../utilities/errors';
+import { manageError, manageFormFieldErrors } from '../utilities/errors';
 
 const styles = StyleSheet.create({
     content: {
@@ -26,9 +26,9 @@ const EmailConfirmation = () => {
         const { activationCode } = data;
         confirmEmail(activationCode)
             .then(() => {
-                // TODO: navegar al menú principal
+                // TODO: Navigate to Authentication screen
             })
-            .catch((errors) => manageSubmitErrors(errors));
+            .catch((error) => manageError(error));
     }, []);
 
     return (
@@ -56,7 +56,7 @@ const EmailConfirmation = () => {
                 )}
                 name="activationCode"
             />
-            {errors.activationCode && <Text>{manageFieldErrors(errors.activationCode)}</Text>}
+            {errors.activationCode && <Text>{manageFormFieldErrors(errors.activationCode)}</Text>}
             <Button title="Activar cuenta" onPress={handleSubmit(onSubmit)} />
             <Button title="Reenviar código" />
             {/* TODO: navigate to ResendEmailConfirmation */}

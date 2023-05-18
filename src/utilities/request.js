@@ -1,6 +1,7 @@
 import axios from "axios";
 import { SERVER } from './constants';
 import GraphQLQuery from "./GraphQLQuery";
+import { errorMessages } from "./errors";
 
 const axiosInstance = axios.create({
     baseURL: SERVER,
@@ -21,7 +22,7 @@ const request = async (graphQLQuery, token) => {
             "Authorization": `Bearer ${token}`
         }
     });
-    // Exist an error
+    // Exist an error in the response
     if (res.data.errors) throw res.data.errors;
     // Successful request
     return res.data.data;

@@ -5,8 +5,8 @@ import { getMyInfo, signin } from '../GraphQL';
 import { UserContext } from '../utilities/UserContext';
 import { emailPattern } from '../utilities/patterns';
 import { validationMessages } from '../utilities/constants';
-import { manageFieldErrors, manageSubmitErrors } from '../utilities/errors';
-
+import { manageError, manageFormFieldErrors } from '../utilities/errors';
+import { storeToken } from '../utilities/jwt';
 
 const styles = StyleSheet.create({
     content: {
@@ -45,8 +45,8 @@ export default Authentication = () => {
         formState: { errors },
     } = useForm({
         defaultValues: {
-            email: '',
-            password: '',
+            email: 'imorales@unal.edu.co',
+            password: 'qweqwe123',
         },
     });
 
@@ -55,10 +55,14 @@ export default Authentication = () => {
     const onSubmit = useCallback((data) => {
         const { email, password } = data;
         signin(email, password)
+            .then((token) => {
+                storeToken(token);
+                return token;
+            })
             .then((token) => getMyInfo(token))
             .then((myInfo) => setUser(myInfo))
-            // TODO: Si la cuenta está verificada ir al home screen, sinó al emailConfirmation screen 
-            .catch((errors) => manageSubmitErrors(errors));
+            // TODO: Si la cuenta está verificada ir al Home screen, sinó al EmailConfirmation screen 
+            .catch((error) => manageError(error));
     }, []);
 
     return (
@@ -92,7 +96,7 @@ export default Authentication = () => {
                             )}
                             name="email"
                         />
-                        {errors.email && <Text style={styles.textError}>{manageFieldErrors(errors.email)}</Text>}
+                        {errors.email && <Text style={styles.textError}>{manageFormFieldErrors(errors.email)}</Text>}
 
                         <Controller
                             control={control}
@@ -116,7 +120,7 @@ export default Authentication = () => {
                             )}
                             name="password"
                         />
-                        {errors.password && <Text style={styles.textError}>{manageFieldErrors(errors.password)}</Text>}
+                        {errors.password && <Text style={styles.textError}>{manageFormFieldErrors(errors.password)}</Text>}
 
                         <Button title="Iniciar sesión" onPress={handleSubmit(onSubmit)} />
                     </View>

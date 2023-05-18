@@ -4,7 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { validationMessages } from "../utilities/constants";
 import { emailPattern } from "../utilities/patterns";
 import { resendEmail } from "../GraphQL";
-import { manageFieldErrors, manageSubmitErrors } from '../utilities/errors';
+import { manageError, manageFormFieldErrors } from '../utilities/errors';
 
 const styles = StyleSheet.create({
     content: {
@@ -30,7 +30,7 @@ const ResendEmailConfirmation = () => {
                 //TODO: mensaje de confirmación de que el código fue reenviado y redireccionar al 
                 // authentication screen
             })
-            .catch((errors) => manageSubmitErrors(errors));
+            .catch((error) => manageError(error));
     }, []);
 
     return (
@@ -58,7 +58,7 @@ const ResendEmailConfirmation = () => {
                 )}
                 name="email"
             />
-            {errors.email && <Text>{manageFieldErrors(errors.email)}</Text>}
+            {errors.email && <Text>{manageFormFieldErrors(errors.email)}</Text>}
             <Button title="Enviar código de activación" onPress={handleSubmit(onSubmit)} />
         </View>
     )

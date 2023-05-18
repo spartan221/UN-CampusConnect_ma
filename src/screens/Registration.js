@@ -5,7 +5,7 @@ import { ROLES, TRANSLATED_ROLES, validationMessages } from '../utilities/consta
 import { RadioGroup } from 'react-native-radio-buttons-group';
 import { signup } from '../GraphQL';
 import { emailPattern } from '../utilities/patterns';
-import { manageFieldErrors, manageSubmitErrors } from '../utilities/errors';
+import { manageError, manageFormFieldErrors } from '../utilities/errors';
 
 const styles = StyleSheet.create({
     content: {
@@ -39,9 +39,9 @@ const Registration = () => {
         const { username, email, password, role } = data;
         signup(username, email, password, role)
             .then((data) => {
-                // TODO: Navigate to EmailConfirmation screen
+                // TODO: Navigate to EmailConfirmation screen.
             })
-            .catch((errors) => manageSubmitErrors(errors));
+            .catch((error) => manageError(error));
     }, []);
 
     return (
@@ -69,7 +69,7 @@ const Registration = () => {
                 )}
                 name="email"
             />
-            {errors.email && <Text>{manageFieldErrors(errors.email)}</Text>}
+            {errors.email && <Text>{manageFormFieldErrors(errors.email)}</Text>}
             <Controller
                 control={control}
                 rules={{
@@ -88,7 +88,7 @@ const Registration = () => {
                 )}
                 name="username"
             />
-            {errors.username && <Text>{manageFieldErrors(errors.username)}</Text>}
+            {errors.username && <Text>{manageFormFieldErrors(errors.username)}</Text>}
             <Controller
                 control={control}
                 rules={{
@@ -111,7 +111,7 @@ const Registration = () => {
                 )}
                 name="password"
             />
-            {errors.password && <Text>{manageFieldErrors(errors.password)}</Text>}
+            {errors.password && <Text>{manageFormFieldErrors(errors.password)}</Text>}
             <Controller
                 control={control}
                 rules={{
@@ -131,7 +131,7 @@ const Registration = () => {
                 )}
                 name="repeatPassword"
             />
-            {errors.repeatPassword && <Text>{manageFieldErrors(errors.repeatPassword)}</Text>}
+            {errors.repeatPassword && <Text>{manageFormFieldErrors(errors.repeatPassword)}</Text>}
             <Controller
                 control={control}
                 rules={{
@@ -150,7 +150,7 @@ const Registration = () => {
                 )}
                 name="role"
             />
-            {errors.role && <Text>{manageFieldErrors(errors.role)}</Text>}
+            {errors.role && <Text>{manageFormFieldErrors(errors.role)}</Text>}
             <Button title="Registrar" onPress={handleSubmit(onSubmit)} />
         </View>
     )
