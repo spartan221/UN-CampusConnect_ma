@@ -1,10 +1,11 @@
 import React, { useCallback } from "react";
 import { View, Text, Button, TextInput, StyleSheet } from "react-native";
 import { useForm, Controller } from "react-hook-form";
-import { validationMessages } from "../utilities/constants";
+import { screens, validationMessages } from "../utilities/constants";
 import { emailPattern } from "../utilities/patterns";
 import { resendEmail } from "../GraphQL";
 import { manageError, manageFormFieldErrors } from '../utilities/errors';
+import { alertWindow } from "../utilities/alert";
 
 const styles = StyleSheet.create({
     content: {
@@ -14,9 +15,12 @@ const styles = StyleSheet.create({
     },
 });
 
-const ResendEmailConfirmation = () => {
+const ResendEmailConfirmation = (props) => {
 
-    const { control, handleSubmit, formState: { errors } } = useForm({
+    // Properties
+    const { navigation } = props;
+
+    const { control, handleSubmit, reset, formState: { errors } } = useForm({
         defaultValues: {
             email: '',
         }
@@ -26,9 +30,8 @@ const ResendEmailConfirmation = () => {
         const { email } = data;
         resendEmail(email)
             .then(() => {
-                console.log('Código de activación reenviado');
-                //TODO: mensaje de confirmación de que el código fue reenviado y redireccionar al 
-                // authentication screen
+                reset();
+                alertWindow('Código enviado', 'Por favor, revisa tu correo y activa tu cuenta', 'Aceptar');
             })
             .catch((error) => manageError(error));
     }, []);
@@ -60,6 +63,7 @@ const ResendEmailConfirmation = () => {
             />
             {errors.email && <Text>{manageFormFieldErrors(errors.email)}</Text>}
             <Button title="Enviar código de activación" onPress={handleSubmit(onSubmit)} />
+            <Button title="Volver" onPress={() => navigation.navigate(screens.emailConfirmation)} />
         </View>
     )
 };

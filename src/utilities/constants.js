@@ -23,7 +23,8 @@ export const GRAPHQL = {
                         id,
                         email,
                         username,
-                        role
+                        role,
+                        status
                     }
                 }
 
@@ -74,3 +75,13 @@ export const validationMessages = {
     repeatPassword: "La contraseña no conincide",
     activationCode: "El código de activación no es válido"
 }
+
+// Screen names
+export const screens = Object.freeze({
+    home: 'Inicio',
+    signip: 'Iniciar Sesión',
+    signup: 'Registro',
+    emailConfirmationNavigator: 'Activación de cuenta',
+    emailConfirmation: 'Confirmación de correo',
+    ResendEmailConfirmation: 'Reenviar código de activación',
+})

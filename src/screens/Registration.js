@@ -6,6 +6,7 @@ import { RadioGroup } from 'react-native-radio-buttons-group';
 import { signup } from '../GraphQL';
 import { emailPattern } from '../utilities/patterns';
 import { manageError, manageFormFieldErrors } from '../utilities/errors';
+import { alertWindow } from '../utilities/alert';
 
 const styles = StyleSheet.create({
     content: {
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
 
 const Registration = () => {
 
-    const { control, handleSubmit, formState: { errors }, getValues } = useForm({
+    const { control, handleSubmit, reset, formState: { errors }, getValues } = useForm({
         defaultValues: {
             email: '',
             username: '',
@@ -38,8 +39,9 @@ const Registration = () => {
     const onSubmit = useCallback((data) => {
         const { username, email, password, role } = data;
         signup(username, email, password, role)
-            .then((data) => {
-                // TODO: Navigate to EmailConfirmation screen.
+            .then(() => {
+                reset();
+                alertWindow('Usuario registrado', 'Por favor, revise su correo para activar la cuenta', 'Aceptar');
             })
             .catch((error) => manageError(error));
     }, []);

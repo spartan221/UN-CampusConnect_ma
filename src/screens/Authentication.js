@@ -4,7 +4,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { getMyInfo, signin } from '../GraphQL';
 import { UserContext } from '../utilities/UserContext';
 import { emailPattern } from '../utilities/patterns';
-import { validationMessages } from '../utilities/constants';
+import { screens, validationMessages } from '../utilities/constants';
 import { manageError, manageFormFieldErrors } from '../utilities/errors';
 import { storeToken } from '../utilities/jwt';
 
@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         padding: '10%',
+        overflow: 'scroll'
     },
     formWrapper: {
         backgroundColor: '#ccc',
@@ -35,7 +36,10 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Authentication = () => {
+export default Authentication = (props) => {
+
+    // Properties
+    const { navigation } = props;
 
     const [user, setUser] = useContext(UserContext);
 
@@ -45,11 +49,10 @@ export default Authentication = () => {
         formState: { errors },
     } = useForm({
         defaultValues: {
-            email: 'imorales@unal.edu.co',
-            password: 'qweqwe123',
+            email: 'somaso1219@glumark.com',
+            password: 'password',
         },
     });
-
 
 
     const onSubmit = useCallback((data) => {
@@ -61,9 +64,9 @@ export default Authentication = () => {
             })
             .then((token) => getMyInfo(token))
             .then((myInfo) => setUser(myInfo))
-            // TODO: Si la cuenta está verificada ir al Home screen, sinó al EmailConfirmation screen 
             .catch((error) => manageError(error));
     }, []);
+
 
     return (
         <View style={styles.content}>
@@ -123,6 +126,7 @@ export default Authentication = () => {
                         {errors.password && <Text style={styles.textError}>{manageFormFieldErrors(errors.password)}</Text>}
 
                         <Button title="Iniciar sesión" onPress={handleSubmit(onSubmit)} />
+                        <Button title="Registrarse" onPress={() => navigation.navigate(screens.signup)} />
                     </View>
                 </View>
             </View>

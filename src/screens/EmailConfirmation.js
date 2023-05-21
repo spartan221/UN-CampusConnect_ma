@@ -1,10 +1,11 @@
 import React, { useCallback } from "react";
 import { View, Text, Button, TextInput, StyleSheet } from "react-native";
 import { useForm, Controller } from "react-hook-form";
-import { validationMessages } from "../utilities/constants";
+import { screens, validationMessages } from "../utilities/constants";
 import { activationCodePattern } from "../utilities/patterns";
 import { confirmEmail } from "../GraphQL";
 import { manageError, manageFormFieldErrors } from '../utilities/errors';
+import { alertWindow } from "../utilities/alert";
 
 const styles = StyleSheet.create({
     content: {
@@ -14,9 +15,12 @@ const styles = StyleSheet.create({
     },
 });
 
-const EmailConfirmation = () => {
+const EmailConfirmation = (props) => {
 
-    const { control, handleSubmit, formState: { errors } } = useForm({
+    // Properties
+    const { navigation } = props;
+
+    const { control, handleSubmit, reset, formState: { errors } } = useForm({
         defaultValues: {
             activationCode: '',
         }
@@ -26,7 +30,8 @@ const EmailConfirmation = () => {
         const { activationCode } = data;
         confirmEmail(activationCode)
             .then(() => {
-                // TODO: Navigate to Authentication screen
+                reset();
+                alertWindow('Cuenta activada', 'Ya puede iniciar sesión con normalidad', 'Aceptar');
             })
             .catch((error) => manageError(error));
     }, []);
@@ -58,8 +63,7 @@ const EmailConfirmation = () => {
             />
             {errors.activationCode && <Text>{manageFormFieldErrors(errors.activationCode)}</Text>}
             <Button title="Activar cuenta" onPress={handleSubmit(onSubmit)} />
-            <Button title="Reenviar código" />
-            {/* TODO: navigate to ResendEmailConfirmation */}
+            <Button title="Reenviar código" onPress={() => navigation.navigate(screens.ResendEmailConfirmation)} />
         </View>
     )
 };
