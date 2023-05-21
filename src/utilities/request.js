@@ -1,10 +1,10 @@
-import axios from "axios";
+import axios from 'axios';
 import { SERVER } from './constants';
-import GraphQLQuery from "./GraphQLQuery";
+import GraphQLQuery from './GraphQLQuery';
 
 const axiosInstance = axios.create({
-    baseURL: SERVER,
-    method: 'post',
+  baseURL: SERVER,
+  method: 'post',
 });
 
 /**
@@ -14,17 +14,17 @@ const axiosInstance = axios.create({
  * @returns {Object} data object or error array from graphql response
  */
 const request = async (graphQLQuery, token) => {
-    const res = await axiosInstance({
-        data: graphQLQuery,
-        headers: {
-            "content-type": "application/json",
-            //TODO: manage bearer token
-        }
-    });
-    // Exist an error
-    if (res.data.errors) throw res.data.errors;
-    // Successful request
-    return res.data.data;
+  const res = await axiosInstance({
+    data: graphQLQuery,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  // Exist an error
+  if (res.data.errors) throw res.data.errors;
+  // Successful request
+  return res.data.data;
 };
 
 export default request;

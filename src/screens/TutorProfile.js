@@ -1,155 +1,229 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  FlatList,
-  SafeAreaView,
-  SectionList,
-  StatusBar,
-  ScrollView,
-} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, Image, FlatList, ScrollView, SafeAreaView } from 'react-native';
+import { getTutorProfile } from '../utilities/tutorprofile';
 
-const DATA1 = [
-  {
-    title: 'Universidad Nacional',
-    data: [
-      'Fecha Inicio: 23-10-2019',
-      'Fecha Fin: 22-11-2022',
-      'Título: Ingeniero de Sistemas y Computación',
-    ],
-  },
-  {
-    title: 'Universidad EAFIT',
-    data: [
-      'Fecha Inicio: 23-10-2019',
-      'Fecha Fin: 22-11-2022',
-      'Título: PhD en Ingeniería de Sistemas y Computación',
-    ],
-  },
-  {
-    title: 'Universidad de los Andes',
-    data: [
-      'Fecha Inicio: 23-10-2019',
-      'Fecha Fin: 22-11-2022',
-      'Título: Maestría en Ingeniería de Sistemas y Computación',
-    ],
-  },
-];
-
-const DATA2 = [
-  {
-    title: 'Google',
-    data: ['Fecha Inicio: 23-10-2019', 'Fecha Fin: 22-11-2022', 'Posición: Desarrollador Junior'],
-  },
-  {
-    title: 'Microsoft',
-    data: ['Fecha Inicio: 23-10-2019', 'Fecha Fin: 22-11-2022', 'Posición: Arquitecto de Software'],
-  },
-  {
-    title: 'Amazon',
-    data: ['Fecha Inicio: 23-10-2019', 'Fecha Fin: 22-11-2022', 'Posición: Desarrollador Senior'],
-  },
-];
-
-const TutorProfile = () => {
+const ProfileHeader = ({ name, last_name, photo, description }) => {
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <View style={styles.rowLayout}>
-          <Image source={require('../../assets/photo.jpg')} style={styles.image} />
-          <Text>Daniel Vargas</Text>
-        </View>
-        <View style={{ flex: 2 }}>
-          <Text>Me llamo Daniel Vargas y soy un Ingeniero de Sistemas y Computación</Text>
-          <Text>Fecha de Nacimiento: 23-10-2001</Text>
-          <Text>Lugar de Nacimiento: Tunja</Text>
-          <Text>Dirección: Cra 23 #57-20</Text>
-          <Text>Correo Electrónico: danvargasgo@unal.edu.co</Text>
-          <Text>Teléfono: 3102158245</Text>
-          <View>
-            <Text>Estudios</Text>
-            <SectionList
-              sections={DATA1}
-              keyExtractor={(item, index) => item + index}
-              renderItem={({ item }) => (
-                <View>
-                  <Text>{item}</Text>
-                </View>
-              )}
-              renderSectionHeader={({ section: { title } }) => (
-                <Text style={{ fontWeight: 'bold' }}>{title}</Text>
-              )}
-            />
+    <View style={styles.profileHeader}>
+      <Image source="../../photo.jpg" style={styles.photo} />
+      <Text style={styles.name}>
+        {name} {last_name}
+      </Text>
+      <Text style={styles.description}>{description}</Text>
+    </View>
+  );
+};
 
-            <Text>Trabajos</Text>
-            <SectionList
-              nestedScrollEnabled={false}
-              sections={DATA2}
-              keyExtractor={(item, index) => item + index}
-              renderItem={({ item }) => (
-                <View>
-                  <Text>{item}</Text>
-                </View>
-              )}
-              renderSectionHeader={({ section: { title } }) => (
-                <Text style={{ fontWeight: 'bold' }}>{title}</Text>
-              )}
-            />
+const Skills = ({ skills }) => {
+  return (
+    <View style={styles.section}>
+      <Text style={styles.sectionTitle}>Habilidades</Text>
+      <FlatList
+        data={skills}
+        renderItem={({ item }) => <Text style={styles.item}>{item.name}</Text>}
+        keyExtractor={(item, index) => index.toString()}
+        scrollEnabled={false}
+      />
+    </View>
+  );
+};
 
-            <Text>Trabajos</Text>
-            <SectionList
-              nestedScrollEnabled={false}
-              sections={DATA2}
-              keyExtractor={(item, index) => item + index}
-              renderItem={({ item }) => (
-                <View>
-                  <Text>{item}</Text>
-                </View>
-              )}
-              renderSectionHeader={({ section: { title } }) => (
-                <Text style={{ fontWeight: 'bold' }}>{title}</Text>
-              )}
-            />
-          </View>
-          <Text>Hola</Text>
-          <Text>Hola</Text>
-          <Text>Hola</Text>
-          <Text>Hola</Text>
-          <Text>Hola</Text>
-          <Text>Hola</Text>
-          <Text>Hola</Text>
-          <Text>Hola</Text>
-          <Text>Hola</Text>
-          <Text>Hola</Text>
-          <Text>Hola</Text>
-          <Text>Chao</Text>
+const Languages = ({ languages, tutor_languages }) => {
+  const combinedLanguages = languages.map((language) => {
+    const levelObj = tutor_languages.find((level) => level.language_id === language.id);
+    const level = levelObj ? levelObj.level : 'Nivel sin especificar';
+    return { id: language.id, name: language.name, level };
+  });
+  return (
+    <View style={styles.section}>
+      <Text style={styles.sectionTitle}>Lenguajes</Text>
+      <FlatList
+        data={combinedLanguages}
+        renderItem={({ item }) => (
+          <Text style={styles.item}>
+            {item.name} - {item.level}
+          </Text>
+        )}
+        keyExtractor={(item, index) => index.toString()}
+        scrollEnabled={false}
+      />
+    </View>
+  );
+};
+
+const Schools = ({ schools, tutor_schools }) => {
+  const combinedSchools = schools.map((school) => {
+    const tutorSchoolsObj = tutor_schools.find(
+      (tutorSchool) => tutorSchool.school_id === school.id
+    );
+    const start_year = tutorSchoolsObj ? tutorSchoolsObj.start_year : 'Año sin especificar';
+    const end_year = tutorSchoolsObj ? tutorSchoolsObj.end_year : 'Año sin especificar';
+    const title = tutorSchoolsObj ? tutorSchoolsObj.title : 'Título sin especificar';
+    return { id: school.id, name: school.name, start_year, end_year, title };
+  });
+  return (
+    <View style={styles.section}>
+      <Text style={styles.sectionTitle}>Educación</Text>
+      <FlatList
+        data={combinedSchools}
+        renderItem={({ item }) => (
+          <Text style={styles.item}>
+            {item.title} - {item.name} ({item.start_year} - {item.end_year})
+          </Text>
+        )}
+        scrollEnabled={false}
+        keyExtractor={(item, index) => index.toString()}
+      />
+    </View>
+  );
+};
+
+const Jobs = ({ jobs, tutor_jobs }) => {
+  const combinedJobs = jobs.map((job) => {
+    const tutorJobsObj = tutor_jobs.find((tutorJob) => tutorJob.job_id === job.id);
+    const start_year = tutorJobsObj ? tutorJobsObj.start_year : 'Año sin especificar';
+    const end_year = tutorJobsObj ? tutorJobsObj.end_year : 'Año sin especificar';
+    const position = tutorJobsObj ? tutorJobsObj.position : 'Posición sin especificar';
+    return { name: job.name, start_year, end_year, position };
+  });
+  return (
+    <View style={styles.section}>
+      <Text style={styles.sectionTitle}>Experiencia Laboral</Text>
+      <FlatList
+        data={combinedJobs}
+        renderItem={({ item }) => (
+          <Text style={styles.item}>
+            {item.position} - {item.name} ({item.start_year} - {item.end_year})
+          </Text>
+        )}
+        scrollEnabled={false}
+        keyExtractor={(item, index) => index.toString()}
+      />
+    </View>
+  );
+};
+
+const Profile = ({ data }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [myData, setMyData] = useState({});
+
+  useEffect(() => {
+    fetchData().then(() => {
+      setIsLoading(false);
+    });
+  }, []);
+
+  const fetchData = async () => {
+    await getTutorProfile('644fd256c5018adaa8473fc3')
+      .then((response) => {
+        setMyData(response);
+        console.log(myData);
+      })
+      .catch((errors) => {
+        console.log(errors);
+      });
+  };
+
+  if (isLoading) {
+    return (
+      <View>
+        <Text>Cargando datos...</Text>
+      </View>
+    );
+  }
+
+  const {
+    name,
+    last_name,
+    birth_place,
+    birthdate,
+    address,
+    email,
+    phone,
+    description,
+    photo,
+    skills,
+    languages,
+    tutor_languages,
+    schools,
+    tutor_schools,
+    jobs,
+    tutor_jobs,
+  } = myData;
+
+  return (
+    <ScrollView>
+      <View style={styles.container}>
+        <ProfileHeader name={name} last_name={last_name} photo={photo} description={description} />
+        <View style={styles.details}>
+          <Text style={styles.item}>
+            <Text style={styles.label}>Lugar de Nacimiento:</Text> {birth_place}
+          </Text>
+          <Text style={styles.item}>
+            <Text style={styles.label}>Fecha de Nacimiento:</Text> {birthdate}
+          </Text>
+          <Text style={styles.item}>
+            <Text style={styles.label}>Dirección:</Text> {address}
+          </Text>
+          <Text style={styles.item}>
+            <Text style={styles.label}>Correo electrónico:</Text> {email}
+          </Text>
+          <Text style={styles.item}>
+            <Text style={styles.label}>Teléfono:</Text> {phone}
+          </Text>
+          <Skills skills={skills} />
+          <Languages languages={languages} tutor_languages={tutor_languages} />
+          <Schools schools={schools} tutor_schools={tutor_schools} />
+          <Jobs jobs={jobs} tutor_jobs={tutor_jobs} />
         </View>
-      </ScrollView>
-    </SafeAreaView>
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight,
-    marginHorizontal: 16,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    //paddingBottom: 220,
   },
-  rowLayout: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+  profileHeader: {
     alignItems: 'center',
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
-  image: {
+  photo: {
     width: 100,
     height: 100,
     borderRadius: 50,
   },
+  name: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 10,
+  },
+  description: {
+    fontSize: 16,
+    marginTop: 10,
+  },
+  details: {
+    padding: 20,
+  },
+  label: {
+    fontWeight: 'bold',
+  },
+  section: {
+    marginTop: 20,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  item: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
 });
-export default TutorProfile;
+
+export default Profile;
