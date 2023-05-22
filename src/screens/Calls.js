@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Modal, Button } from 'react-native';
-import { getCalls } from '../utilities/call';
+import { getCalls } from '../GraphQL';
 
 const Calls = () => {
   const [selectedCall, setSelectedCall] = useState(null);

@@ -192,4 +192,7 @@ export const screens = Object.freeze({
   emailConfirmationNavigator: 'Activación de cuenta',
   emailConfirmation: 'Confirmación de correo',
   ResendEmailConfirmation: 'Reenviar código de activación',
+  tutorProfile: 'Hoja de Vida',
+  callForm: 'Crear Convocatoria',
+  calls: 'Convocatorias',
 });

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Text, View, StyleSheet, Button, TextInput, ScrollView } from 'react-native';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
-import { addCall } from '../utilities/call';
+import { addCall } from '../GraphQL';
 
 export default CallForm = () => {
   const {

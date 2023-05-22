@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Text, View, StyleSheet, Button, TextInput, ScrollView, Alert } from 'react-native';
 import { useForm, Controller, useFieldArray, set } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
-import { createTutorProfile } from '../utilities/tutorprofile';
+import { createTutorProfile } from '../GraphQL';
 import * as ImagePicker from 'expo-image-picker';
 import { firebase } from '../config/firebase/firebase';
 
-export default TutorProfileForm = () => {
+export default TutorProfileForm = ({ setProfileTutorCreated }) => {
   const [image, setImage] = useState(null);
 
   const {
@@ -94,6 +94,7 @@ export default TutorProfileForm = () => {
       .then((response) => {
         console.log(response);
         Alert.alert('Hoja de vida creada exitosamente');
+        setProfileTutorCreated(true);
       })
       .catch((error) => {
         console.log(error);
