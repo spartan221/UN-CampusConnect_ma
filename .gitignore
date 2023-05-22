@@ -21,3 +21,6 @@ web-build/
 
 # env file
 .env
+
+# Practice files
+Practice*

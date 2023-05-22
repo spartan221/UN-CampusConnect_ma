@@ -1,4 +1,3 @@
-import GraphQLQuery from './GraphQLQuery';
 import { DEV_IP, API_GATEWAY_URL } from '@env';
 
 export const SERVER = API_GATEWAY_URL || `http:${DEV_IP}:5000/graphql`;
@@ -77,55 +76,24 @@ export const GRAPHQL = {
                     }
                 }
             `,
+    getMyInfo: `
+                {
+                    getMyInfo {
+                        id,
+                        email,
+                        username,
+                        role,
+                        status
+                    }
+                }
+
+            `,
+    resendEmail: `
+                query ($email: String!) {
+                    resendEmail(email: $email)
+                }    
+            `,
   },
-  /*
-  Petición de ejemplo para crear un tutor:
-    mutation {
-  createTutorProfile(tutor: {tutor: {name: "Daniel", last_name: "Bonilla", birth_place: "Usme", birthdate: "2001-01-01", address: "cra 1", email: "unal@gmail.com", phone: "123456789", description: "Soy un tutor de matemáticas", photo: "https://example.com/photo.jpg", skills_attributes: [{name: "Bailar"}, {name: "Correr"}], languages_attributes: [{name: "Inglés", level: "C1"}, {name: "Coreano", level: "B1"}], schools_attributes: [{name: "Colboy" start_year: "2002-02-02" end_year: "2003-02-02" title: "Ingeniero"}, {name: "UNAL" start_year: "2002-02-02" end_year: "2003-02-02" title: "Técnico"}], jobs_attributes: [{name: "IBM" position: "contador" start_year: "2022-01-01" end_year: "2023-01-01"}, {name: "Google" position: "Operador" start_year: "2022-01-01" end_year: "2023-01-01"}]}}) {
-    name
-    last_name
-    birth_place
-    birthdate
-    address
-    email
-    phone
-    description
-    photo
-    skills {
-      id
-      name
-    }
-    languages {
-      id
-      name
-    }
-    tutor_languages {
-      language_id
-      level
-    }
-    jobs {
-      id
-      name
-    }
-    tutor_jobs {
-      job_id
-      position
-      start_year
-      end_year
-    }
-    schools {
-      id
-      name
-    }
-    tutor_schools {
-      school_id
-      start_year
-      end_year
-      title
-    }
-  }
-}
-    */
   mutation: {
     createTutorProfile: `
             mutation createTutorProfile($tutor: TutorProfileInput!) {
@@ -182,5 +150,46 @@ export const GRAPHQL = {
                 }
             }
         `,
+    confirmEmail: `
+                mutation ($token: String!) {
+                    confirmEmail(token: $token)
+                }
+            `,
+    signup: `
+                mutation ($username: String!, $email: String!, $password: String!, $role: String!) {
+                    signup(user: {
+                        username: $username,
+                        email: $email,
+                        password: $password,
+                        role: $role
+                    })
+                }
+            `,
   },
 };
+
+// Available roles for the app
+export const ROLES = ['student', 'tutor'];
+export const TRANSLATED_ROLES = {
+  student: 'estudiante',
+  tutor: 'tutor',
+};
+
+// Validations error messages
+export const validationMessages = {
+  required: 'Este campo es obligatorio',
+  email: 'El correo electrónico no es válido',
+  password: 'La contraseña debe poseer al menos 8 carácteres',
+  repeatPassword: 'La contraseña no coincide',
+  activationCode: 'El código de activación no es válido',
+};
+
+// Screen names
+export const screens = Object.freeze({
+  home: 'Inicio',
+  signip: 'Iniciar Sesión',
+  signup: 'Registro',
+  emailConfirmationNavigator: 'Activación de cuenta',
+  emailConfirmation: 'Confirmación de correo',
+  ResendEmailConfirmation: 'Reenviar código de activación',
+});
