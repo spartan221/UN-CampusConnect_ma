@@ -11,7 +11,7 @@ const EmailConfirmationNavigation = () => {
     return (
         <Stack.Navigator initialRouteName={screens.emailConfirmation} screenOptions={{ headerShown: false }}>
             <Stack.Screen name={screens.emailConfirmation} component={EmailConfirmation} />
-            <Stack.Screen name={screens.ResendEmailConfirmation} component={ResendEmailConfirmation} />
+            <Stack.Screen name={screens.resendEmailConfirmation} component={ResendEmailConfirmation} />
         </Stack.Navigator>
     )
 };

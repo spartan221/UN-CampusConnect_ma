@@ -68,7 +68,7 @@ const EmailConfirmation = (props) => {
                 render={({ message }) => <Text>{message}</Text>}
             />
             <Button title="Activar cuenta" onPress={handleSubmit(onSubmit)} />
-            <Button title="Reenviar código" onPress={() => navigation.navigate(screens.ResendEmailConfirmation)} />
+            <Button title="Reenviar código" onPress={() => navigation.navigate(screens.resendEmailConfirmation)} />
         </View>
     )
 };

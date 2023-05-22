@@ -57,6 +57,25 @@ export const GRAPHQL = {
                 }
             `
         ,
+        createPublication:
+            `
+                mutation (
+                    $title: String!, 
+                    $content_publication: String!, 
+                    $publication_date: String!,
+                    $image: String!
+                    ) {
+                    createPublication(publication: {
+                        title: $title,
+                        content_publication: $content_publication,
+                        publication_date: $publication_date,
+                        image: $image
+                    }) {
+                        message
+                    }
+                }   
+            `
+        ,
     }
 };
 
@@ -83,5 +102,9 @@ export const screens = Object.freeze({
     signup: 'Registro',
     emailConfirmationNavigator: 'Activación de cuenta',
     emailConfirmation: 'Confirmación de correo',
-    ResendEmailConfirmation: 'Reenviar código de activación',
+    resendEmailConfirmation: 'Reenviar código de activación',
+    bienestarNavigator: 'Bienestar',
+    createPublication: 'Crear publicación',
+    showPublications: 'Publicaciones',
+    showPublicationById: 'Buscar publicación'
 })

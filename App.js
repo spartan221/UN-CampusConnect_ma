@@ -22,12 +22,9 @@ export default App = () => {
     const [user, setUser] = useState();
 
     const getUserInfoWithSavedToken = async () => {
-        const token = await getToken();
-        if (token) {
-            getMyInfo(token)
-                .then((myInfo) => setUser(myInfo))
-                .catch(() => alertWindow('Error', 'No se pudieron recuperar los datos', 'Aceptar'));
-        };
+        getMyInfo()
+            .then((myInfo) => setUser(myInfo))
+            .catch(() => alertWindow('Error', 'No se pudieron recuperar los datos', 'Aceptar'));
     }
 
     useEffect(() => {

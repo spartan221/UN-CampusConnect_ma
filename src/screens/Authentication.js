@@ -59,11 +59,8 @@ export default Authentication = (props) => {
     const onSubmit = useCallback((data) => {
         const { email, password } = data;
         signin(email, password)
-            .then((token) => {
-                storeToken(token);
-                return token;
-            })
-            .then((token) => getMyInfo(token))
+            .then((token) => storeToken(token))
+            .then(() => getMyInfo())
             .then((myInfo) => setUser(myInfo))
             .catch((error) => manageError(error));
     }, []);
