@@ -5,6 +5,8 @@ import Authentication from './src/components/Authentication';
 import TutorProfile from './src/screens/TutorProfile';
 import TutorProfileForm from './src/screens/TutorProfileForm';
 import { getTutorProfile } from './src/utilities/tutorprofile';
+import CallForm from './src/screens/CallForm';
+import Calls from './src/screens/Calls';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -15,7 +17,7 @@ const styles = StyleSheet.create({
 export default App = () => {
   return (
     <SafeAreaView style={styles.wrapper}>
-      <TutorProfile data={{}} />
+      <Calls />
     </SafeAreaView>
   );
 };

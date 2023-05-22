@@ -5,7 +5,7 @@ import { getTutorProfile } from '../utilities/tutorprofile';
 const ProfileHeader = ({ name, last_name, photo, description }) => {
   return (
     <View style={styles.profileHeader}>
-      <Image source="../../photo.jpg" style={styles.photo} />
+      <Image source={{ uri: photo }} style={styles.photo} />
       <Text style={styles.name}>
         {name} {last_name}
       </Text>
@@ -114,7 +114,7 @@ const Profile = ({ data }) => {
   }, []);
 
   const fetchData = async () => {
-    await getTutorProfile('644fd256c5018adaa8473fc3')
+    await getTutorProfile('646b7577a3c962f518f9fe35')
       .then((response) => {
         setMyData(response);
         console.log(myData);

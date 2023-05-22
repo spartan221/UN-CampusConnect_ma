@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, Button, TextInput, ScrollView } from 'react-native';
-import { useForm, Controller, useFieldArray } from 'react-hook-form';
+import { Text, View, StyleSheet, Button, TextInput, ScrollView, Alert } from 'react-native';
+import { useForm, Controller, useFieldArray, set } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
-import { createTutorProfile, getTutorProfile } from '../utilities/tutorprofile';
+import { createTutorProfile } from '../utilities/tutorprofile';
+import * as ImagePicker from 'expo-image-picker';
+import { firebase } from '../config/firebase/firebase';
 
 export default TutorProfileForm = () => {
+  const [image, setImage] = useState(null);
+
   const {
     control,
     handleSubmit,
@@ -47,26 +51,55 @@ export default TutorProfileForm = () => {
     name: 'jobs_attributes',
   });
 
-  const onSubmit = (data) => {
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  const onSubmit = async (data) => {
+    console.log('Aqui');
+    var uploadUrl =
+      'https://firebasestorage.googleapis.com/v0/b/un-campusconnect.appspot.com/o/user-2935527_1280.png?alt=media&token=fd362d60-80b3-4129-b6db-18f21abe7a63';
+    if (image !== null) {
+      const response = await fetch(image);
+      const blob = await response.blob();
+      const filename = image.substring(image.lastIndexOf('/') + 1);
+      var ref = firebase.storage().ref().child(filename).put(blob);
+
+      try {
+        await ref;
+        uploadUrl = await ref.snapshot.ref.getDownloadURL();
+        console.log(uploadUrl);
+        console.log('Imagen subida exitosamente');
+      } catch (error) {
+        console.log(error);
+      }
+      //setImage(null);
+    }
+    data.photo = uploadUrl;
     const tutor = { tutor: data };
     console.log(tutor);
     createTutorProfile(tutor)
       .then((response) => {
         console.log(response);
+        Alert.alert('Hoja de vida creada exitosamente');
       })
       .catch((error) => {
         console.log(error);
       });
-    /*getTutorProfile('644fd256c5018adaa8473fc3')
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });*/
   };
-  /* {"address": "CRA 1", "birthDate": "2001-02-02", "birthPlace": "Tunja", "description": "Yo soy un tutor de programación ", "email": "danvargasgo@unal.edu.co", "firstName": "Daniel", "jobs": [{"company": "Bbva", "end_year": "2002-02-02", "position": "Gerente", "start_year": "2001-02-02"}], "languages": [{"language": "Inglés ", "level": "C1"}], "lastName": "Vargas", "phone": "310101010101", "schools": [{"end_year": "2003-02-02", "name": "Unal", "start_year": "2002-02-02", "title": "Ingeniero de Sistemas"}], "skills": [{"skill": "Dormir"}]}
-   */
+
   return (
     <ScrollView>
       <View style={styles.content}>
@@ -74,6 +107,9 @@ export default TutorProfileForm = () => {
           <View style={styles.form}>
             <Text>Registro Perfil Tutor</Text>
             <View>
+              <Text>Foto de Perfil</Text>
+              <Button title="Selecciona una imagen de perfil" onPress={pickImage} />
+
               <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (

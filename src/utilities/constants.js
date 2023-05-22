@@ -63,6 +63,20 @@ export const GRAPHQL = {
                     }
                 }
             `,
+    getCalls: `
+                query {
+                    getCalls {
+                      id
+                      nameGroup
+                      maximunParticipants
+                      place
+                      schedule
+                      deadline
+                      status
+                      participants
+                    }
+                }
+            `,
   },
   /*
   Petición de ejemplo para crear un tutor:
@@ -157,6 +171,14 @@ export const GRAPHQL = {
                         end_year
                         title
                     }
+                }
+            }
+        `,
+    addCall: `
+            mutation addCall($maximunParticipants: Int!, $nameGroup: String!, $place: String!, $schedule: String!, $deadline: String!, $participants: [String], $status: String!) {
+                addCall(Call: {maximunParticipants: $maximunParticipants, nameGroup: $nameGroup, place: $place, schedule: $schedule, deadline: $deadline, participants: $participants, status: $status}) {
+                  nameGroup
+                  place
                 }
             }
         `,
