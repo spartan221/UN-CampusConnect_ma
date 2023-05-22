@@ -81,3 +81,12 @@ export const createPublication = async (title, content_publication, publication_
     const message = data.createPublication.message;
     return message;
 }
+
+/**
+ * @returns {Array} an array with publications
+ */
+export const getPublications = async () => {
+    const data = await request(new GraphQLQuery(GRAPHQL.query.getPublications));
+    const publications = data.getpublications;
+    return publications;
+}

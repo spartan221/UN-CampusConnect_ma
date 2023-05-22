@@ -10,7 +10,7 @@ const Tab = createBottomTabNavigator();
 
 const BienestarNavigator = () => {
     return (
-        <Tab.Navigator initialRouteName={screens.createPublication} screenOptions={{ headerShown: false, tabBarHideOnKeyboard: true }}>
+        <Tab.Navigator initialRouteName={screens.showPublications} screenOptions={{ headerShown: false, tabBarHideOnKeyboard: true }}>
             <Tab.Screen name={screens.createPublication} component={CreatePublication} />
             <Tab.Screen name={screens.showPublications} component={ShowPublications} />
             <Tab.Screen name={screens.showPublicationById} component={ShowPublicationById} />

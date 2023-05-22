@@ -36,6 +36,21 @@ export const GRAPHQL = {
                     resendEmail(email: $email)
                 }    
             `
+        ,
+        getPublications:
+            `
+                query {
+                    getpublications {
+                    title
+                    content_publication
+                    author_publication
+                    publication_date
+                    publication_id
+                    image
+                    }
+                }
+            `
+        ,
     },
     mutation: {
         confirmEmail:
