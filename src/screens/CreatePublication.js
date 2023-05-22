@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 const CreatePublication = () => {
 
 
-    const { control, handleSubmit, formState: { errors } } = useForm({
+    const { control, handleSubmit, reset, formState: { errors } } = useForm({
         defaultValues: {
             title: '',
             "content_publication": '',
@@ -31,7 +31,10 @@ const CreatePublication = () => {
         const publication = { ...data, "publication_date": new Date().toISOString() };
         const { title, content_publication, publication_date, image } = publication;
         createPublication(title, content_publication, publication_date, image)
-            .then((message) => alertWindow('Información', message, 'aceptar'))
+            .then((message) => {
+                reset();
+                alertWindow('Información', message, 'aceptar');
+            })
             .catch((error) => manageError(error))
     }
 
