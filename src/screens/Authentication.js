@@ -1,11 +1,12 @@
 import React, { useCallback, useContext } from 'react';
 import { Text, View, StyleSheet, Button, TextInput, Image } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
+import { ErrorMessage } from '@hookform/error-message';
 import { getMyInfo, signin } from '../GraphQL';
 import { UserContext } from '../utilities/UserContext';
 import { emailPattern } from '../utilities/patterns';
 import { screens, validationMessages } from '../utilities/constants';
-import { manageError, manageFormFieldErrors } from '../utilities/errors';
+import { manageError } from '../utilities/errors';
 import { storeToken } from '../utilities/jwt';
 
 const styles = StyleSheet.create({
@@ -99,8 +100,11 @@ export default Authentication = (props) => {
                             )}
                             name="email"
                         />
-                        {errors.email && <Text style={styles.textError}>{manageFormFieldErrors(errors.email)}</Text>}
-
+                        <ErrorMessage
+                            errors={errors}
+                            name="email"
+                            render={({ message }) => <Text>{message}</Text>}
+                        />
                         <Controller
                             control={control}
                             rules={{
@@ -123,8 +127,11 @@ export default Authentication = (props) => {
                             )}
                             name="password"
                         />
-                        {errors.password && <Text style={styles.textError}>{manageFormFieldErrors(errors.password)}</Text>}
-
+                        <ErrorMessage
+                            errors={errors}
+                            name="password"
+                            render={({ message }) => <Text>{message}</Text>}
+                        />
                         <Button title="Iniciar sesión" onPress={handleSubmit(onSubmit)} />
                         <Button title="Registrarse" onPress={() => navigation.navigate(screens.signup)} />
                     </View>

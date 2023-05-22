@@ -1,10 +1,5 @@
 import { alertWindow } from './alert';
 
-export const manageFormFieldErrors = (error) => {
-    const errorMessage = error.message;
-    return errorMessage;
-};
-
 export const manageError = (error) => {
     let errorMessage = '';
     // Error de conexión con el Api Gateway

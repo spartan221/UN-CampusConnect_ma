@@ -72,7 +72,7 @@ export const validationMessages = {
     required: "Este campo es obligatorio",
     email: "El correo electrónico no es válido",
     password: "La contraseña debe poseer al menos 8 carácteres",
-    repeatPassword: "La contraseña no conincide",
+    repeatPassword: "La contraseña no coincide",
     activationCode: "El código de activación no es válido"
 }
 

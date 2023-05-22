@@ -1,10 +1,11 @@
 import React, { useCallback } from "react";
 import { View, Text, Button, TextInput, StyleSheet } from "react-native";
 import { useForm, Controller } from "react-hook-form";
+import { ErrorMessage } from '@hookform/error-message';
 import { screens, validationMessages } from "../utilities/constants";
 import { activationCodePattern } from "../utilities/patterns";
 import { confirmEmail } from "../GraphQL";
-import { manageError, manageFormFieldErrors } from '../utilities/errors';
+import { manageError } from '../utilities/errors';
 import { alertWindow } from "../utilities/alert";
 
 const styles = StyleSheet.create({
@@ -61,7 +62,11 @@ const EmailConfirmation = (props) => {
                 )}
                 name="activationCode"
             />
-            {errors.activationCode && <Text>{manageFormFieldErrors(errors.activationCode)}</Text>}
+            <ErrorMessage
+                errors={errors}
+                name="activationCode"
+                render={({ message }) => <Text>{message}</Text>}
+            />
             <Button title="Activar cuenta" onPress={handleSubmit(onSubmit)} />
             <Button title="Reenviar código" onPress={() => navigation.navigate(screens.ResendEmailConfirmation)} />
         </View>
