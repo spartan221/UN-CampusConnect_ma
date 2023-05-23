@@ -8,7 +8,7 @@ const Stack = createNativeStackNavigator();
 
 const MainNavigator = () => {
     return (
-        <Stack.Navigator initialRouteName={screens.bienestarNavigator}>
+        <Stack.Navigator initialRouteName={screens.home}>
             {/* 
         TODO: Aquí van los componentes que pueden ser seleccionados
         cuando el usuario ya está autenticado, se acceden desde botones en el componente Home

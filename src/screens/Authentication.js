@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     },
     loginIcon: {
         width: 200,
-        height: 250,
+        height: 200,
         alignSelf: 'center',
         marginBottom: 20,
         borderRadius: 50,
@@ -50,8 +50,8 @@ export default Authentication = (props) => {
         formState: { errors },
     } = useForm({
         defaultValues: {
-            email: 'somaso1219@glumark.com',
-            password: 'password',
+            email: '',
+            password: '',
         },
     });
 

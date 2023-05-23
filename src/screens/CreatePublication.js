@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
 import { useForm, Controller } from "react-hook-form";
+import { ErrorMessage } from '@hookform/error-message';
 import { createPublication } from '../GraphQL';
 import { alertWindow } from '../utilities/alert';
 import { manageError } from '../utilities/errors';
+import { validationMessages } from '../utilities/constants';
 
 
 const styles = StyleSheet.create({
@@ -22,13 +24,16 @@ const CreatePublication = () => {
         defaultValues: {
             title: '',
             "content_publication": '',
-            image: ''
         }
     });
 
 
     const onSubmit = (data) => {
-        const publication = { ...data, "publication_date": new Date().toISOString() };
+        const publication = {
+            ...data,
+            "publication_date": new Date().toISOString(),
+            image: 'https://picsum.photos/200'
+        };
         const { title, content_publication, publication_date, image } = publication;
         createPublication(title, content_publication, publication_date, image)
             .then((message) => {
@@ -43,7 +48,10 @@ const CreatePublication = () => {
             <Controller
                 control={control}
                 rules={{
-                    required: true,
+                    required: {
+                        message: validationMessages.required,
+                        value: true
+                    },
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
@@ -55,12 +63,23 @@ const CreatePublication = () => {
                 )}
                 name="title"
             />
-            {errors.firstName && <Text>This is required.</Text>}
+            <ErrorMessage
+                errors={errors}
+                name="title"
+                render={({ message }) => <Text>{message}</Text>}
+            />
 
             <Controller
                 control={control}
                 rules={{
-                    maxLength: 100,
+                    required: {
+                        message: validationMessages.required,
+                        value: true
+                    },
+                    maxLength: {
+                        message: '',
+                        value: 255
+                    },
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
@@ -72,24 +91,11 @@ const CreatePublication = () => {
                 )}
                 name="content_publication"
             />
-
-
-            <Controller
-                control={control}
-                rules={{
-                    maxLength: 100,
-                }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                        placeholder="Enlace de imagen"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                    />
-                )}
-                name="image"
+            <ErrorMessage
+                errors={errors}
+                name="content_publication"
+                render={({ message }) => <Text>{message}</Text>}
             />
-
             <Button title="Crear" onPress={handleSubmit(onSubmit)} />
         </View>
     )

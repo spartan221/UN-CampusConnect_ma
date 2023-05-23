@@ -107,7 +107,8 @@ export const validationMessages = {
     email: "El correo electrónico no es válido",
     password: "La contraseña debe poseer al menos 8 carácteres",
     repeatPassword: "La contraseña no coincide",
-    activationCode: "El código de activación no es válido"
+    activationCode: "El código de activación no es válido",
+    maxlength255: "Solo esta permitido 255 carácteres"
 }
 
 // Screen names
@@ -121,5 +122,4 @@ export const screens = Object.freeze({
     bienestarNavigator: 'Bienestar',
     createPublication: 'Crear publicación',
     showPublications: 'Publicaciones',
-    showPublicationById: 'Buscar publicación'
 })
