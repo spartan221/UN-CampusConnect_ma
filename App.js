@@ -4,7 +4,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { UserContext } from './src/utilities/UserContext';
 
 import { getMyInfo } from './src/GraphQL';
-import { getToken } from './src/utilities/jwt';
 import { alertWindow } from './src/utilities/alert';
 import { NavigationContainer } from '@react-navigation/native';
 import AuthenticationNavigator from './src/navigation/AuthenticationNavigator';
@@ -55,13 +54,11 @@ export default App = () => {
 
     return (
         <NativeBaseProvider theme={theme}>
-            <SafeAreaView style={styles.wrapper}>
-                <UserContext.Provider value={[user, setUser]}>
-                    <NavigationContainer>
-                        {user ? <MainNavigator /> : <AuthenticationNavigator />}
-                    </NavigationContainer>
-                </UserContext.Provider>
-            </SafeAreaView>
+            <UserContext.Provider value={[user, setUser]}>
+                <NavigationContainer>
+                    {user ? <MainNavigator /> : <AuthenticationNavigator />}
+                </NavigationContainer>
+            </UserContext.Provider>
         </NativeBaseProvider>
     );
 };

@@ -32,6 +32,9 @@ const Home = (props) => {
             <Text>{JSON.stringify(user)}</Text>
             <Button title={'Cerrar Sesión'} onPress={manageLogOut} />
             <Button title={'Bienestar'} onPress={() => navigation.navigate(screens.bienestarNavigator)} />
+            <Button title={'Convocatorias'} onPress={() => navigation.navigate(screens.calls)} />
+            {user.role === 'tutor' && <Button title={screens.tutorProfile} onPress={() => navigation.navigate(screens.tutorProfile)} />}
+            {user.role === 'admin' && <Button title={screens.callForm} onPress={() => navigation.navigate(screens.callForm)} />}
         </View>
     )
 

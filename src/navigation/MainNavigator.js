@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TutorProfile from '../screens/TutorProfile';
 import CallForm from '../screens/CallForm';
@@ -6,10 +6,14 @@ import Calls from '../screens/Calls';
 import Home from '../screens/Home';
 import BienestarNavigator from './BienestarNavigator';
 import { screens } from '../utilities/constants';
+import { UserContext } from '../utilities/UserContext';
 
 const Stack = createNativeStackNavigator();
 
 const MainNavigator = () => {
+
+  const [user, setUser] = useContext(UserContext);
+
   return (
     <Stack.Navigator initialRouteName={screens.home}>
       <Stack.Screen name={screens.home} component={Home} options={{ headerShown: false }} />
