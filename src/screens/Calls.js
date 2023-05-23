@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Modal, Button } from 'react-native';
 import { getCalls } from '../GraphQL';
+import { HStack, Heading, Spinner } from 'native-base';
 
 const Calls = () => {
   const [selectedCall, setSelectedCall] = useState(null);
@@ -27,9 +28,12 @@ const Calls = () => {
 
   if (isLoading) {
     return (
-      <View>
-        <Text>Cargando datos...</Text>
-      </View>
+      <HStack space={2} justifyContent="center">
+        <Spinner accessibilityLabel="Loading posts" />
+        <Heading color="primary.500" fontSize="md">
+          Cargando datos...
+        </Heading>
+      </HStack>
     );
   }
 

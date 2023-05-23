@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, Button, TextInput, ScrollView, Alert } from 'react-native';
+import { Text, View, StyleSheet, TextInput, ScrollView, Alert } from 'react-native';
 import { useForm, Controller, useFieldArray, set } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import { createTutorProfile } from '../GraphQL';
 import * as ImagePicker from 'expo-image-picker';
 import { firebase } from '../config/firebase/firebase';
+import { Button } from 'native-base';
 
 export default TutorProfileForm = ({ setProfileTutorCreated }) => {
   const [image, setImage] = useState(null);
@@ -109,7 +110,9 @@ export default TutorProfileForm = ({ setProfileTutorCreated }) => {
             <Text>Registro Perfil Tutor</Text>
             <View>
               <Text>Foto de Perfil</Text>
-              <Button title="Selecciona una imagen de perfil" onPress={pickImage} />
+              <Button size="sm" variant="solid" onPress={pickImage}>
+                Selecciona una imagen de perfil
+              </Button>
 
               <Controller
                 control={control}
@@ -263,10 +266,14 @@ export default TutorProfileForm = ({ setProfileTutorCreated }) => {
                     )}
                     name={`skills_attributes[${index}].name`}
                   />
-                  <Button title="Eliminar Habilidad" onPress={() => removeSkill(index)} />
+                  <Button size="sm" variant="solid" onPress={() => removeSkill(index)}>
+                    Eliminar Habilidad
+                  </Button>
                 </View>
               ))}
-              <Button title="Agregar Habilidad" onPress={() => appendSkill({ name: '' })} />
+              <Button size="sm" colorScheme="tema" onPress={() => appendSkill({ name: '' })}>
+                Agregar Habilidad
+              </Button>
 
               <Text>Idiomas</Text>
               {languages.map((item, index) => (
