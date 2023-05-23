@@ -42,7 +42,7 @@ const CreatePublication = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const getRandomImage = () => {
-    const randomNumber = Math.floor(Math.random() * 600);
+    const randomNumber = Math.floor(Math.random() * 200);
     return `https://picsum.photos/id/${randomNumber}/200`;
   };
 
@@ -56,11 +56,12 @@ const CreatePublication = () => {
     const { title, content_publication, publication_date, image } = publication;
     createPublication(title, content_publication, publication_date, image)
       .then((message) => {
-        setIsLoading(false);
         reset();
+        setIsLoading(false);
         alertWindow('Información', message, 'aceptar');
       })
       .catch((error) => {
+        reset();
         setIsLoading(false);
         manageError(error);
       });

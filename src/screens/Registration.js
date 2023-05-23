@@ -50,8 +50,8 @@ const Registration = () => {
     setIsLoading(true);
     signup(username, email, password, role)
       .then(() => {
-        setIsLoading(false);
         reset();
+        setIsLoading(false);
         alertWindow(
           'Usuario registrado',
           'Por favor, revise su correo para activar la cuenta',
@@ -59,6 +59,7 @@ const Registration = () => {
         );
       })
       .catch((error) => {
+        reset();
         setIsLoading(false);
         manageError(error);
       });

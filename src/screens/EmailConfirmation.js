@@ -39,11 +39,12 @@ const EmailConfirmation = (props) => {
     setIsLoading(true);
     confirmEmail(activationCode)
       .then(() => {
-        setIsLoading(false);
         reset();
+        setIsLoading(false);
         alertWindow('Cuenta activada', 'Ya puede iniciar sesión con normalidad', 'Aceptar');
       })
       .catch((error) => {
+        reset();
         setIsLoading(false);
         manageError(error);
       });

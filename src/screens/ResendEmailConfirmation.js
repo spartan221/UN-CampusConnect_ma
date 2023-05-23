@@ -39,11 +39,12 @@ const ResendEmailConfirmation = (props) => {
     setIsLoading(true);
     resendEmail(email)
       .then(() => {
-        setIsLoading(false);
         reset();
+        setIsLoading(false);
         alertWindow('Código enviado', 'Por favor, revisa tu correo y activa tu cuenta', 'Aceptar');
       })
       .catch((error) => {
+        reset();
         setIsLoading(false);
         manageError(error);
       });
