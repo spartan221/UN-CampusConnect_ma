@@ -23,7 +23,8 @@ export const GRAPHQL = {
                         id,
                         email,
                         username,
-                        role
+                        role,
+                        status
                     }
                 }
 
@@ -35,6 +36,21 @@ export const GRAPHQL = {
                     resendEmail(email: $email)
                 }    
             `
+        ,
+        getPublications:
+            `
+                query {
+                    getpublications {
+                    title
+                    content_publication
+                    author_publication
+                    publication_date
+                    publication_id
+                    image
+                    }
+                }
+            `
+        ,
     },
     mutation: {
         confirmEmail:
@@ -56,6 +72,25 @@ export const GRAPHQL = {
                 }
             `
         ,
+        createPublication:
+            `
+                mutation (
+                    $title: String!, 
+                    $content_publication: String!, 
+                    $publication_date: String!,
+                    $image: String!
+                    ) {
+                    createPublication(publication: {
+                        title: $title,
+                        content_publication: $content_publication,
+                        publication_date: $publication_date,
+                        image: $image
+                    }) {
+                        message
+                    }
+                }   
+            `
+        ,
     }
 };
 
@@ -71,6 +106,20 @@ export const validationMessages = {
     required: "Este campo es obligatorio",
     email: "El correo electrónico no es válido",
     password: "La contraseña debe poseer al menos 8 carácteres",
-    repeatPassword: "La contraseña no conincide",
-    activationCode: "El código de activación no es válido"
+    repeatPassword: "La contraseña no coincide",
+    activationCode: "El código de activación no es válido",
+    maxlength255: "Solo esta permitido 255 carácteres"
 }
+
+// Screen names
+export const screens = Object.freeze({
+    home: 'Inicio',
+    signip: 'Iniciar Sesión',
+    signup: 'Registro',
+    emailConfirmationNavigator: 'Activación de cuenta',
+    emailConfirmation: 'Confirmación de correo',
+    resendEmailConfirmation: 'Reenviar código de activación',
+    bienestarNavigator: 'Bienestar',
+    createPublication: 'Crear publicación',
+    showPublications: 'Publicaciones',
+})

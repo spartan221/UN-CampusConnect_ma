@@ -1,5 +1,6 @@
 import GraphQLQuery from "./utilities/GraphQLQuery";
 import { GRAPHQL } from "./utilities/constants";
+import { getToken } from "./utilities/jwt";
 import request from "./utilities/request";
 
 /**
@@ -28,10 +29,10 @@ export const signup = async (username, email, password, role) => {
 }
 
 /**
- * @param {String} token jwt token 
  * @returns {Object} Object with id, email, username and role of the user.
  */
-export const getMyInfo = async (token) => {
+export const getMyInfo = async () => {
+    const token = await getToken();
     const data = await request(new GraphQLQuery(GRAPHQL.query.getMyInfo), token);
     const myInfo = data.getMyInfo;
     return myInfo;
@@ -58,4 +59,34 @@ export const confirmEmail = async (activationCode) => {
     const data = await request(new GraphQLQuery(GRAPHQL.mutation.confirmEmail, { token: activationCode }));
     const confirmEmail = data.confirmEmail;
     return confirmEmail;
+}
+
+
+/**
+ * 
+ * @param {String} title 
+ * @param {String} content_publication 
+ * @param {String} publication_date 
+ * @param {String} image url
+ * @returns {String} response message
+ */
+export const createPublication = async (title, content_publication, publication_date, image) => {
+    const token = await getToken();
+    const data = await request(new GraphQLQuery(GRAPHQL.mutation.createPublication, {
+        title,
+        content_publication,
+        publication_date,
+        image
+    }), token);
+    const message = data.createPublication.message;
+    return message;
+}
+
+/**
+ * @returns {Array} an array with publications
+ */
+export const getPublications = async () => {
+    const data = await request(new GraphQLQuery(GRAPHQL.query.getPublications));
+    const publications = data.getpublications;
+    return publications;
 }
