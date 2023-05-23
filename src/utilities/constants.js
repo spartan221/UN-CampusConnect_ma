@@ -1,12 +1,11 @@
-import { DEV_IP, API_GATEWAY_URL } from "@env";
+import { DEV_IP, API_GATEWAY_URL } from '@env';
 
 export const SERVER = API_GATEWAY_URL || `http:${DEV_IP}:5000/graphql`;
 
 // GraphQL
 export const GRAPHQL = {
     query: {
-        signin:
-            `
+        signin: `
                 query ($email: String!, $password: String!)
                 {
                     signin( user: {
@@ -14,10 +13,70 @@ export const GRAPHQL = {
                         password: $password
                     })
                 }
-            `
-        ,
-        getMyInfo:
-            `
+            `,
+        getTutorProfile: `
+                query ($id: String!)
+                {
+                    getTutorProfile(id: $id) {
+                        name
+                        last_name
+                        birth_place
+                        birthdate
+                        address
+                        email
+                        phone
+                        description
+                        photo
+                        skills {
+                            id
+                            name
+                        }
+                        languages {
+                            id
+                            name
+                        }
+                        tutor_languages {
+                            language_id
+                            level
+                        }
+                        jobs {
+                            id
+                            name
+                        }
+                        tutor_jobs {
+                            job_id
+                            position
+                            start_year
+                            end_year
+                        }
+                        schools {
+                            id
+                            name
+                        }
+                        tutor_schools {
+                            school_id
+                            start_year
+                            end_year
+                            title
+                        }
+                    }
+                }
+            `,
+        getCalls: `
+                query {
+                    getCalls {
+                      id
+                      nameGroup
+                      maximunParticipants
+                      place
+                      schedule
+                      deadline
+                      status
+                      participants
+                    }
+                }
+            `,
+        getMyInfo: `
                 {
                     getMyInfo {
                         id,
@@ -28,10 +87,8 @@ export const GRAPHQL = {
                     }
                 }
 
-            `
-        ,
-        resendEmail:
-            `
+            `,
+        resendEmail: `
                 query ($email: String!) {
                     resendEmail(email: $email)
                 }    
@@ -53,15 +110,67 @@ export const GRAPHQL = {
         ,
     },
     mutation: {
-        confirmEmail:
-            `
+        createTutorProfile: `
+            mutation createTutorProfile($tutor: TutorProfileInput!) {
+                createTutorProfile(tutor: $tutor) {
+                    name
+                    last_name
+                    birth_place
+                    birthdate
+                    address
+                    email
+                    phone
+                    description
+                    photo
+                    skills {
+                        id
+                        name
+                    }
+                    languages {
+                        id
+                        name
+                    }
+                    tutor_languages {
+                        language_id
+                        level
+                    }
+                    jobs {
+                        id
+                        name
+                    }
+                    tutor_jobs {
+                        job_id
+                        position
+                        start_year
+                        end_year
+                    }
+                    schools {
+                        id
+                        name
+                    }
+                    tutor_schools {
+                        school_id
+                        start_year
+                        end_year
+                        title
+                    }
+                }
+            }
+        `,
+        addCall: `
+            mutation addCall($maximunParticipants: Int!, $nameGroup: String!, $place: String!, $schedule: String!, $deadline: String!, $participants: [String], $status: String!) {
+                addCall(Call: {maximunParticipants: $maximunParticipants, nameGroup: $nameGroup, place: $place, schedule: $schedule, deadline: $deadline, participants: $participants, status: $status}) {
+                  nameGroup
+                  place
+                }
+            }
+        `,
+        confirmEmail: `
                 mutation ($token: String!) {
                     confirmEmail(token: $token)
                 }
-            `
-        ,
-        signup:
-            `
+            `,
+        signup: `
                 mutation ($username: String!, $email: String!, $password: String!, $role: String!) {
                     signup(user: {
                         username: $username,
@@ -94,11 +203,11 @@ export const GRAPHQL = {
     }
 };
 
-// Available roles for the app 
+// Available roles for the app
 export const ROLES = ['student', 'tutor'];
 export const TRANSLATED_ROLES = {
     student: 'estudiante',
-    tutor: 'tutor'
+    tutor: 'tutor',
 };
 
 // Validations error messages
@@ -122,4 +231,7 @@ export const screens = Object.freeze({
     bienestarNavigator: 'Bienestar',
     createPublication: 'Crear publicación',
     showPublications: 'Publicaciones',
-})
+    tutorProfile: 'Hoja de Vida',
+    callForm: 'Crear Convocatoria',
+    calls: 'Convocatorias',
+});
