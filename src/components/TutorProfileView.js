@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, FlatList, ScrollView, SafeAreaView } from 'react-native';
 import { getTutorProfile } from '../GraphQL';
-import { HStack, Heading, Spinner } from 'native-base';
+import { HStack, Heading, Spinner, Center } from 'native-base';
 
 const ProfileHeader = ({ name, last_name, photo, description }) => {
   return (
@@ -127,12 +127,14 @@ const TutorProfileView = ({ id }) => {
 
   if (isLoading) {
     return (
-      <HStack space={2} justifyContent="center">
-        <Spinner accessibilityLabel="Loading posts" />
-        <Heading color="primary.500" fontSize="md">
-          Cargando datos...
-        </Heading>
-      </HStack>
+      <Center flex={1}>
+        <HStack space={2} justifyContent="center">
+          <Spinner accessibilityLabel="Loading posts" color="#61735a" />
+          <Heading color="#61735a" fontSize="md">
+            Cargando datos...
+          </Heading>
+        </HStack>
+      </Center>
     );
   }
 

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, TextInput, ScrollView, Alert } from 'react-native';
-import { useForm, Controller, useFieldArray, set } from 'react-hook-form';
+import { Text, View, StyleSheet, ScrollView, Alert } from 'react-native';
+import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import { createTutorProfile } from '../GraphQL';
 import * as ImagePicker from 'expo-image-picker';
 import { firebase } from '../config/firebase/firebase';
-import { Button } from 'native-base';
+import { FormControl, Input, Button } from 'native-base';
 
 export default TutorProfileForm = ({ setProfileTutorCreated }) => {
   const [image, setImage] = useState(null);
@@ -110,19 +110,17 @@ export default TutorProfileForm = ({ setProfileTutorCreated }) => {
             <Text>Registro Perfil Tutor</Text>
             <View>
               <Text>Foto de Perfil</Text>
-              <Button size="sm" variant="solid" onPress={pickImage}>
+              <Button bg="#20403a" marginTop={2} onPress={pickImage}>
                 Selecciona una imagen de perfil
               </Button>
 
               <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    placeholder="Nombre"
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                  />
+                  <FormControl>
+                    <FormControl.Label>Nombre</FormControl.Label>
+                    <Input onBlur={onBlur} onChangeText={onChange} value={value} />
+                  </FormControl>
                 )}
                 name="name"
               />
@@ -130,12 +128,10 @@ export default TutorProfileForm = ({ setProfileTutorCreated }) => {
               <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    placeholder="Apellido"
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                  />
+                  <FormControl>
+                    <FormControl.Label>Apellido</FormControl.Label>
+                    <Input onBlur={onBlur} onChangeText={onChange} value={value} />
+                  </FormControl>
                 )}
                 name="last_name"
               />
@@ -143,12 +139,10 @@ export default TutorProfileForm = ({ setProfileTutorCreated }) => {
               <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    placeholder="Lugar de Nacimiento"
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                  />
+                  <FormControl>
+                    <FormControl.Label>Lugar de Nacimiento</FormControl.Label>
+                    <Input onBlur={onBlur} onChangeText={onChange} value={value} />
+                  </FormControl>
                 )}
                 name="birth_place"
               />
@@ -162,12 +156,10 @@ export default TutorProfileForm = ({ setProfileTutorCreated }) => {
                   },
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    placeholder="Fecha de Nacimiento (AAAA-MM-DD)"
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                  />
+                  <FormControl>
+                    <FormControl.Label>Fecha de Nacimiento (AAAA-MM-DD)</FormControl.Label>
+                    <Input onBlur={onBlur} onChangeText={onChange} value={value} />
+                  </FormControl>
                 )}
                 name="birthdate"
               />
@@ -180,12 +172,10 @@ export default TutorProfileForm = ({ setProfileTutorCreated }) => {
               <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    placeholder="Dirección"
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                  />
+                  <FormControl>
+                    <FormControl.Label>Dirección</FormControl.Label>
+                    <Input onBlur={onBlur} onChangeText={onChange} value={value} />
+                  </FormControl>
                 )}
                 name="address"
               />
@@ -199,12 +189,10 @@ export default TutorProfileForm = ({ setProfileTutorCreated }) => {
                   },
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    placeholder="Correo electrónico"
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                  />
+                  <FormControl>
+                    <FormControl.Label>Correo electrónico</FormControl.Label>
+                    <Input onBlur={onBlur} onChangeText={onChange} value={value} />
+                  </FormControl>
                 )}
                 name="email"
               />
@@ -223,12 +211,10 @@ export default TutorProfileForm = ({ setProfileTutorCreated }) => {
                   },
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    placeholder="Teléfono"
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                  />
+                  <FormControl>
+                    <FormControl.Label>Teléfono</FormControl.Label>
+                    <Input onBlur={onBlur} onChangeText={onChange} value={value} />
+                  </FormControl>
                 )}
                 name="phone"
               />
@@ -241,74 +227,68 @@ export default TutorProfileForm = ({ setProfileTutorCreated }) => {
               <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    placeholder="Descripción"
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                  />
+                  <FormControl>
+                    <FormControl.Label>Descripción</FormControl.Label>
+                    <Input onBlur={onBlur} onChangeText={onChange} value={value} />
+                  </FormControl>
                 )}
                 name="description"
               />
 
-              <Text>Habilidades</Text>
               {skills.map((item, index) => (
                 <View key={item.id}>
                   <Controller
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
-                      <TextInput
-                        placeholder="Habilidad"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                      />
+                      <FormControl>
+                        <FormControl.Label>Habilidad</FormControl.Label>
+                        <Input onBlur={onBlur} onChangeText={onChange} value={value} />
+                      </FormControl>
                     )}
                     name={`skills_attributes[${index}].name`}
                   />
-                  <Button size="sm" variant="solid" onPress={() => removeSkill(index)}>
+                  <Button bg="#20403a" marginTop={2} onPress={() => removeSkill(index)}>
                     Eliminar Habilidad
                   </Button>
                 </View>
               ))}
-              <Button size="sm" colorScheme="tema" onPress={() => appendSkill({ name: '' })}>
+              <Button bg="#20403a" marginTop={2} onPress={() => appendSkill({ name: '' })}>
                 Agregar Habilidad
               </Button>
 
-              <Text>Idiomas</Text>
               {languages.map((item, index) => (
                 <View key={item.id}>
                   <Controller
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
-                      <TextInput
-                        placeholder="Idioma"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                      />
+                      <FormControl>
+                        <FormControl.Label>Idioma</FormControl.Label>
+                        <Input onBlur={onBlur} onChangeText={onChange} value={value} />
+                      </FormControl>
                     )}
                     name={`languages_attributes[${index}].name`}
                   />
                   <Controller
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
-                      <TextInput
-                        placeholder="Nivel"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                      />
+                      <FormControl>
+                        <FormControl.Label>Nivel</FormControl.Label>
+                        <Input onBlur={onBlur} onChangeText={onChange} value={value} />
+                      </FormControl>
                     )}
                     name={`languages_attributes[${index}].level`}
                   />
-                  <Button title="Eliminar Idioma" onPress={() => removeLanguage(index)} />
+                  <Button bg="#20403a" marginTop={2} onPress={() => removeLanguage(index)}>
+                    Eliminar Idioma
+                  </Button>
                 </View>
               ))}
               <Button
-                title="Agregar Idioma"
-                onPress={() => appendLanguage({ name: '', level: '' })}
-              />
+                bg="#20403a"
+                marginTop={2}
+                onPress={() => appendLanguage({ name: '', level: '' })}>
+                Agregar Idioma
+              </Button>
 
               <Text>Educación</Text>
               {schools.map((item, index) => (
@@ -316,12 +296,10 @@ export default TutorProfileForm = ({ setProfileTutorCreated }) => {
                   <Controller
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
-                      <TextInput
-                        placeholder="Institución"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                      />
+                      <FormControl>
+                        <FormControl.Label>Institución</FormControl.Label>
+                        <Input onBlur={onBlur} onChangeText={onChange} value={value} />
+                      </FormControl>
                     )}
                     name={`schools_attributes[${index}].name`}
                   />
@@ -334,12 +312,10 @@ export default TutorProfileForm = ({ setProfileTutorCreated }) => {
                       },
                     }}
                     render={({ field: { onChange, onBlur, value } }) => (
-                      <TextInput
-                        placeholder="Año de inicio"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                      />
+                      <FormControl>
+                        <FormControl.Label>Año de Inicio (AAAA-MM-DD)</FormControl.Label>
+                        <Input onBlur={onBlur} onChangeText={onChange} value={value} />
+                      </FormControl>
                     )}
                     name={`schools_attributes[${index}].start_year`}
                   />
@@ -358,12 +334,10 @@ export default TutorProfileForm = ({ setProfileTutorCreated }) => {
                       },
                     }}
                     render={({ field: { onChange, onBlur, value } }) => (
-                      <TextInput
-                        placeholder="Año de finalización"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                      />
+                      <FormControl>
+                        <FormControl.Label>Año de finalización (AAAA-MM-DD)</FormControl.Label>
+                        <Input onBlur={onBlur} onChangeText={onChange} value={value} />
+                      </FormControl>
                     )}
                     name={`schools_attributes[${index}].end_year`}
                   />
@@ -376,36 +350,35 @@ export default TutorProfileForm = ({ setProfileTutorCreated }) => {
                   <Controller
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
-                      <TextInput
-                        placeholder="Título"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                      />
+                      <FormControl>
+                        <FormControl.Label>Título</FormControl.Label>
+                        <Input onBlur={onBlur} onChangeText={onChange} value={value} />
+                      </FormControl>
                     )}
                     name={`schools_attributes[${index}].title`}
                   />
 
-                  <Button title="Eliminar Título" onPress={() => removeSchool(index)} />
+                  <Button bg="#20403a" marginTop={2} onPress={() => removeSchool(index)}>
+                    Eliminar título
+                  </Button>
                 </View>
               ))}
               <Button
-                title="Agregar Título"
-                onPress={() => appendSchool({ name: '', start_year: '', end_year: '' })}
-              />
+                bg="#20403a"
+                marginTop={2}
+                onPress={() => appendSchool({ name: '', start_year: '', end_year: '' })}>
+                Agregar título
+              </Button>
 
-              <Text>Experiencia</Text>
               {jobs.map((item, index) => (
                 <View key={item.id}>
                   <Controller
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
-                      <TextInput
-                        placeholder="Empresa"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                      />
+                      <FormControl>
+                        <FormControl.Label>Compañía</FormControl.Label>
+                        <Input onBlur={onBlur} onChangeText={onChange} value={value} />
+                      </FormControl>
                     )}
                     name={`jobs_attributes[${index}].name`}
                   />
@@ -418,12 +391,10 @@ export default TutorProfileForm = ({ setProfileTutorCreated }) => {
                       },
                     }}
                     render={({ field: { onChange, onBlur, value } }) => (
-                      <TextInput
-                        placeholder="Año de inicio"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                      />
+                      <FormControl>
+                        <FormControl.Label>Año de Inicio (AAAA-MM-DD)</FormControl.Label>
+                        <Input onBlur={onBlur} onChangeText={onChange} value={value} />
+                      </FormControl>
                     )}
                     name={`jobs_attributes[${index}].start_year`}
                   />
@@ -442,12 +413,10 @@ export default TutorProfileForm = ({ setProfileTutorCreated }) => {
                       },
                     }}
                     render={({ field: { onChange, onBlur, value } }) => (
-                      <TextInput
-                        placeholder="Año de finalización"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                      />
+                      <FormControl>
+                        <FormControl.Label>Año de finalización (AAAA-MM-DD)</FormControl.Label>
+                        <Input onBlur={onBlur} onChangeText={onChange} value={value} />
+                      </FormControl>
                     )}
                     name={`jobs_attributes[${index}].end_year`}
                   />
@@ -460,25 +429,29 @@ export default TutorProfileForm = ({ setProfileTutorCreated }) => {
                   <Controller
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
-                      <TextInput
-                        placeholder="Puesto"
-                        onBlur={onBlur}
-                        onChangeText={onChange}
-                        value={value}
-                      />
+                      <FormControl>
+                        <FormControl.Label>Posición</FormControl.Label>
+                        <Input onBlur={onBlur} onChangeText={onChange} value={value} />
+                      </FormControl>
                     )}
                     name={`jobs_attributes[${index}].position`}
                   />
 
-                  <Button title="Eliminar Experiencia" onPress={() => removeJob(index)} />
+                  <Button bg="#20403a" marginTop={2} onPress={() => removeJob(index)}>
+                    Eliminar Experiencia
+                  </Button>
                 </View>
               ))}
               <Button
-                title="Agregar Experiencia"
-                onPress={() => appendJob({ name: '', start_year: '', end_year: '' })}
-              />
+                bg="#20403a"
+                marginTop={2}
+                onPress={() => appendJob({ name: '', start_year: '', end_year: '' })}>
+                Agregar Experiencia
+              </Button>
 
-              <Button title="Crear" onPress={handleSubmit(onSubmit)} />
+              <Button bg="#20403a" marginTop={4} onPress={handleSubmit(onSubmit)}>
+                Crear
+              </Button>
             </View>
           </View>
         </View>
@@ -494,7 +467,6 @@ const styles = StyleSheet.create({
     padding: '10%',
   },
   formWrapper: {
-    backgroundColor: '#ccc',
     flex: 1,
     padding: '10%',
   },

@@ -11,18 +11,21 @@ import { UserContext } from '../utilities/UserContext';
 const Stack = createNativeStackNavigator();
 
 const MainNavigator = () => {
-
   const [user, setUser] = useContext(UserContext);
 
   return (
-    <Stack.Navigator initialRouteName={screens.home}>
+    <Stack.Navigator
+      initialRouteName={screens.home}
+      screenOptions={{ headerStyle: { backgroundColor: '#20403a' }, headerTintColor: '#fff' }}>
       <Stack.Screen name={screens.home} component={Home} options={{ headerShown: false }} />
       <Stack.Screen name={screens.bienestarNavigator} component={BienestarNavigator} />
       <Stack.Screen name={screens.calls} component={Calls} />
-      {user.role === 'tutor' && <Stack.Screen name={screens.tutorProfile} component={TutorProfile} />}
+      {user.role === 'tutor' && (
+        <Stack.Screen name={screens.tutorProfile} component={TutorProfile} />
+      )}
       {user.role === 'admin' && <Stack.Screen name={screens.callForm} component={CallForm} />}
     </Stack.Navigator>
-  )
-}
+  );
+};
 
 export default MainNavigator;
