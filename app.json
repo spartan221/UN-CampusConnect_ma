@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "UN-CampusConnect_ma",
+    "name": "UN-CampusConnect",
     "slug": "UN-CampusConnect_ma",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -19,12 +19,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.sw2023.uncampusconnect_ma"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "0da60e60-5a93-43c6-b671-1859b5ce4a2f"
+      }
     }
   }
 }

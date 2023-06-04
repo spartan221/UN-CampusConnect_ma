@@ -1,6 +1,8 @@
-import { DEV_IP, API_GATEWAY_URL } from '@env';
+import { DEV_IP, API_GATEWAY_URL, API_GATEWAY_PORT } from '@env';
 
-export const SERVER = API_GATEWAY_URL || `http:${DEV_IP}:5000/graphql`;
+export const SERVER = API_GATEWAY_URL && API_GATEWAY_PORT
+    ? `http://${API_GATEWAY_URL}:${API_GATEWAY_PORT}/graphql`
+    : `http:${DEV_IP}:5000/graphql`;
 
 // GraphQL
 export const GRAPHQL = {
